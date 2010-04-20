@@ -29,7 +29,7 @@ $forums = array(
 * @param phpbb_hook $hook phpBB hook instance
 * @return void
 */
-function hook_disable_word_censor_in_forum(phpbb_hook &$hook)
+function hook_disable_word_censor_in_forum(&$hook)
 {
 	global $auth, $config, $user;
 	global $forums, $topic_data;
