@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 * the word censor
 */
 $forums = array(
-	3
+
 );
 
 /**
