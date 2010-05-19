@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 * the word censor
 */
 $forums = array(
-
+	3
 );
 
 /**
@@ -32,16 +32,16 @@ $forums = array(
 function hook_disable_word_censor_in_forum(&$hook)
 {
 	global $auth, $config, $user;
-	global $forums, $topic_data;
+	global $forums;
 
-	// Not looking at a topic
-	if (empty($topic_data))
+	// Only if there is a forum
+	if (!isset($user->page['forum']))
 	{
 		return;
 	}
 
 	// Not ignoring censor settings here?
-	if (!in_array($topic_data['forum_id'], $forums))
+	if (!in_array($user->page['forum'], $forums))
 	{
 		return;
 	}
