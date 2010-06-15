@@ -21,7 +21,9 @@ if (!defined('IN_PHPBB'))
 * have to add the following code to the viewforum_body.html of every template
 * at the place where the link should appear.
 * <code>
-*
+*	<!-- IF topicrow.U_LATEST_POST --><a href="{topicrow.U_LATEST_POST}"><img src="LATEST_POST_IMG" /></a><!-- ENDIF -->
+* </code>
+*/
 
 /**
 * This function is called in template::display(), when called this function
@@ -38,6 +40,12 @@ function hook_view_my_latest_post(&$hook)
 
 	// When not on viewforum.php return
 	if ($user->page['page_name'] != 'viewforum.' . $phpEx)
+	{
+		return;
+	}
+
+	// Don't bother with guests and bots
+	if ($user->data['user_id'] == ANONYMOUS || $user->data['is_bot'])
 	{
 		return;
 	}
@@ -83,7 +91,7 @@ function hook_view_my_latest_post(&$hook)
 	}
 
 	// Finally assign the img
-	$template->assign_var('LATEST_POST_IMG', $phpbb_root_path . '/images/arrw.png');
+	$template->assign_var('LATEST_POST_IMG', $phpbb_root_path . 'images/arrw.png');
 }
 
 // Register the hook
