@@ -2,7 +2,6 @@
 /**
 *
 * @package phpBB3
-* @copyright (c) 2010 Erik Frèrejean (erikfrerejean@phpbb.com) http://www.erikfrerejean.nl
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -30,6 +29,7 @@ if (!defined('IN_PHPBB'))
 * will do some manipulation on the $template->_tpldata array and will add
 * a link to the last post of the user in a topic to the "topicrow" block array
 *
+* @author Erik Frèrejean (erikfrerejean@phpbb.com) http://www.erikfrerejean.nl
 * @param	phpbb_hook $hook The phpBB hook object
 * @return	void
 */
