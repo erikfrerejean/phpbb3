@@ -34,7 +34,7 @@ if (!defined('IN_PHPBB'))
  * 	   be hidden
  */
 $users = array(
-	2
+	2,
 );
 
 /**
