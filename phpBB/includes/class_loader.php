@@ -31,24 +31,46 @@ if (!defined('IN_PHPBB'))
 */
 class phpbb_class_loader
 {
-	private $phpbb_root_path;
+	private $load_paths = array();
 	private $php_ext;
 	private $cache;
 	private $cached_paths = array();
+	private $class_match = '';
 
 	/**
 	* Creates a new phpbb_class_loader, which loads files with the given
 	* file extension from the given phpbb root path.
 	*
-	* @param string $phpbb_root_path phpBB's root directory containing includes/
-	* @param string $php_ext         The file extension for PHP files
+	* @param string $include_path The directory where will be looked for files to include
+	* @param string $php_ext      The file extension for PHP files
+	* @param string $class_prefix The required prefix for classes in this directory
 	*/
-	public function __construct($phpbb_root_path, $php_ext = '.php', $cache = null)
+	public function __construct($include_path, $php_ext = '.php', $cache = null, $class_prefix = 'phpbb')
 	{
-		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 
+		$this->add_loader($include_path, $class_prefix);
 		$this->set_cache($cache);
+	}
+
+	/**
+	 * Add an additional class loader
+	 * @param  string $include_path The directory where will be looked for files to include
+	 * @param  string $class_prefix The required prefix for classes in this directory
+	 * @return void
+	 */
+	public function add_loader($include_path, $class_prefix)
+	{
+		if (!empty($this->load_paths[$class_prefix]))
+		{
+			return;
+		}
+
+		$include_path = (substr($include_path, -1) == '/') ? $include_path : $include_path . '/';
+		$this->load_paths[$class_prefix] = $include_path;
+
+		// Update the regex
+		$this->class_match = '/(' . implode('|', array_keys($this->load_paths)) . ')_[a-zA-Z0-9_]+/';
 	}
 
 	/**
@@ -90,32 +112,32 @@ class phpbb_class_loader
 	}
 
 	/**
-	* Resolves a phpBB class name to a relative path which can be included.
+	* Resolves a class name to a relative path which can be included.
 	*
-	* @param string       $class The class name to resolve, must have a phpbb_
-	*                            prefix
-	* @return string|bool        A relative path to the file containing the
-	*                            class or false if looking it up failed.
+	* @param string       $class  The class name to resolve
+	* @param string       $prefix The class prefix
+	* @return string|bool         A relative path to the file containing the
+	*                             class or false if looking it up failed.
 	*/
-	public function resolve_path($class)
+	public function resolve_path($class, $prefix)
 	{
-		$path_prefix = $this->phpbb_root_path . 'includes/';
+		$path_prefix = $this->load_paths[$prefix];
 
 		if (isset($this->cached_paths[$class]))
 		{
 			return $path_prefix . $this->cached_paths[$class] . $this->php_ext;
 		}
 
-		if (!preg_match('/phpbb_[a-zA-Z0-9_]+/', $class))
+		if (!preg_match($this->class_match, $class))
 		{
 			return false;
 		}
 
-		$parts = explode('_', substr($class, 6));
+		$parts = explode('_', $class);
 
 		$dirs = '';
 
-		for ($i = 0, $n = sizeof($parts); $i < $n && is_dir($path_prefix . $dirs . $parts[$i]); $i++)
+		for ($i = 1, $n = sizeof($parts); $i < $n && is_dir($path_prefix . $dirs . $parts[$i]); $i++)
 		{
 			$dirs .= $parts[$i] . '/';
 		}
@@ -149,9 +171,11 @@ class phpbb_class_loader
 	*/
 	public function load_class($class)
 	{
-		if (substr($class, 0, 6) === 'phpbb_')
+		// Check whether this class can be auto loaded
+		$prefix = substr($class, 0, strpos($class, '_'));
+		if (!empty($this->load_paths[$prefix]))
 		{
-			$path = $this->resolve_path($class);
+			$path = $this->resolve_path($class, $prefix);
 
 			if ($path)
 			{

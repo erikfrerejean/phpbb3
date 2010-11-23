@@ -65,7 +65,7 @@ if ($id)
 
 	$cache = new cache();
 
-	$class_loader = new phpbb_class_loader($phpbb_root_path, '.' . $phpEx, $cache);
+	$class_loader = new phpbb_class_loader($phpbb_root_path . 'includes/', '.' . $phpEx, $cache);
 	$class_loader->register();
 
 	$request	= new phpbb_request();

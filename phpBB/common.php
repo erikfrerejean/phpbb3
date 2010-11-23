@@ -206,8 +206,8 @@ set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handle
 // Cache must be loaded before class loader
 $cache = new cache();
 
-// Setup class loader first
-$class_loader = new phpbb_class_loader($phpbb_root_path, '.' . $phpEx, $cache);
+// Setup the phpBB class loader first
+$class_loader = new phpbb_class_loader($phpbb_root_path . 'includes/', '.' . $phpEx, $cache);
 $class_loader->register();
 
 // Instantiate some basic classes
