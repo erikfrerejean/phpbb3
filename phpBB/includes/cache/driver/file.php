@@ -39,7 +39,7 @@ class phpbb_cache_driver_file extends phpbb_cache_driver_base
 
 		if (defined('PHPBB_CACHE_DIR'))
 		{
-			$this->cache_dir = $phpbb_root_path . PHPBB_CACHE_DIR;
+			$this->cache_dir = ((is_absolute(PHPBB_CACHE_DIR)) ? '' : $phpbb_root_path) . rtrim(PHPBB_CACHE_DIR, '/') . '/';
 		}
 		else
 		{
