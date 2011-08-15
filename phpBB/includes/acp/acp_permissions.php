@@ -658,14 +658,15 @@ class acp_permissions
 	function set_permissions($mode, $permission_type, &$auth_admin, &$user_id, &$group_id, $scripted = false)
 	{
 		global $user, $auth;
-        if (is_array($scripted)) 
-        {
-    		$psubmit = $scripted['psubmit'];
-        } 
-        else 
-        {
-    		$psubmit = request_var('psubmit', array(0 => array(0 => 0)));
-        }
+
+		if (is_array($scripted))
+		{
+			$psubmit = $scripted['psubmit'];
+		}
+		else
+		{
+			$psubmit = request_var('psubmit', array(0 => array(0 => 0)));
+		}
 
 		// User or group to be set?
 		$ug_type = (sizeof($user_id)) ? 'user' : 'group';
@@ -691,35 +692,35 @@ class acp_permissions
 		// currently does not support the amount of dimensions required. ;)
 		//		$auth_settings = request_var('setting', array(0 => array(0 => array('' => 0))));
 
-        if (is_array($scripted)) 
-        {
-    		$auth_settings = array_map('intval', $scripted['setting'][$ug_id][$forum_id]);
-        } 
-        else 
-        {
-    		$auth_settings = array_map('intval', $_POST['setting'][$ug_id][$forum_id]);
-        }
+		if (is_array($scripted))
+		{
+			$auth_settings = array_map('intval', $scripted['setting'][$ug_id][$forum_id]);
+		}
+		else
+		{
+			$auth_settings = array_map('intval', $_POST['setting'][$ug_id][$forum_id]);
+		}
 
 
 		// Do we have a role we want to set?
-        if (is_array($scripted)) 
-        {
-    		$assigned_role = (isset($scripted['role'][$ug_id][$forum_id])) ? (int) $scripted['role'][$ug_id][$forum_id] : 0;
-        } 
-        else 
-        {
-    		$assigned_role = (isset($_POST['role'][$ug_id][$forum_id])) ? (int) $_POST['role'][$ug_id][$forum_id] : 0;
-        }
+		if (is_array($scripted))
+		{
+			$assigned_role = (isset($scripted['role'][$ug_id][$forum_id])) ? (int) $scripted['role'][$ug_id][$forum_id] : 0;
+		}
+		else
+		{
+			$assigned_role = (isset($_POST['role'][$ug_id][$forum_id])) ? (int) $_POST['role'][$ug_id][$forum_id] : 0;
+		}
 
 		// Do the admin want to set these permissions to other items too?
-        if (is_array($scripted)) 
-        {
-    		$inherit = $scripted['inherit'];
-        } 
-        else 
-        {
-    		$inherit = request_var('inherit', array(0 => array(0)));
-        }
+		if (is_array($scripted))
+		{
+			$inherit = $scripted['inherit'];
+		}
+		else
+		{
+			$inherit = request_var('inherit', array(0 => array(0)));
+		}
 
 		$ug_id = array($ug_id);
 		$forum_id = array($forum_id);
@@ -767,14 +768,14 @@ class acp_permissions
 
 		$this->log_action($mode, 'add', $permission_type, $ug_type, $ug_id, $forum_id);
 
-        if (is_array($scripted)) 
-        {
-            return true;
-        } 
-        else 
-        {
-    		trigger_error($user->lang['AUTH_UPDATED'] . adm_back_link($this->u_action));
-        }
+		if (is_array($scripted))
+		{
+			return true;
+		}
+		else
+		{
+			trigger_error($user->lang['AUTH_UPDATED'] . adm_back_link($this->u_action));
+		}
 	}
 
 	/**
