@@ -119,7 +119,7 @@ class ucp_activate
 
 			$messenger->headers('X-AntiAbuse: Board servername - ' . $config['server_name']);
 			$messenger->headers('X-AntiAbuse: User_id - ' . $user->data['user_id']);
-			$messenger->headers('X-AntiAbuse: Username - ' . $user->data['username']);
+			$messenger->headers('X-AntiAbuse: Username - ' . utf8_clean_string($user->data['username']));
 			$messenger->headers('X-AntiAbuse: User IP - ' . $user->ip);
 
 			$messenger->assign_vars(array(
