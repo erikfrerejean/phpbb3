@@ -18,10 +18,3 @@ before_script:
 script:
   - phpunit --configuration travis/phpunit-$DB-travis.xml
 
-notifications:
-  email:
-    recipients:
-      - dev-team@phpbb.com
-    on_success: change
-    on_failure: change
-

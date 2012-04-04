@@ -23,12 +23,13 @@
 	</groups>
 
 	<php>
-		<const name="dbms" value="mysqli"/>
-		<const name="dbhost" value="0.0.0.0" />
-		<const name="dbport" value="3306" />
-		<const name="dbname" value="phpbb_tests" />
-		<const name="dbuser" value="root" />
-		<const name="dbpasswd" value="" />
-		<const name="table_prefix" value="phpbb_"/>
+		<server name="PHPBB_TEST_DBMS" value="sqlite_3"/>
+		<server name="PHPBB_TEST_DBHOST" value=":memory:" />
+		<server name="PHPBB_TEST_DBPORT" value="" />
+		<server name="PHPBB_TEST_DBNAME" value="" />
+		<server name="PHPBB_TEST_DBUSER" value="" />
+		<server name="PHPBB_TEST_DBPASSWD" value="" />
+		<server name="PHPBB_TEST_TABLE_PREFIX" value="phpbb_"/>
 	</php>
 </phpunit>
+
