@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="true"
+	 backupStaticAttributes="true"
+	 colors="true"
+	 convertErrorsToExceptions="true"
+	 convertNoticesToExceptions="true"
+	 convertWarningsToExceptions="true"
+	 processIsolation="false"
+	 stopOnFailure="false"
+	 syntaxCheck="true"
+	 strict="true"
+	 bootstrap="../tests/bootstrap.php">
+	<testsuites>
+		<testsuite name="phpBB Test Suite">
+			<directory suffix="_test.php">../tests/</directory>
+		</testsuite>
+	</testsuites>
+
+	<groups>
+		<exclude>
+			<group>slow</group>
+		</exclude>
+	</groups>
+
+	<php>
+		<server name="PHPBB_TEST_DBMS" value="firebird" />
+		<server name="PHPBB_TEST_DBHOST" value="localhost" />
+		<server name="PHPBB_TEST_DBPORT" value="" />
+		<server name="PHPBB_TEST_DBNAME" value="/tmp/phpbb_tests.fdb" />
+		<server name="PHPBB_TEST_DBUSER" value="SYSDBA" />
+		<server name="PHPBB_TEST_DBPASSWD" value="masterkey" />
+		<server name="PHPBB_TEST_TABLE_PREFIX" value="phpbb_" />
+	</php>
+</phpunit>

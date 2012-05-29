@@ -5,15 +5,29 @@ php:
   - 5.4
 
 env:
+  - DB=firebird
   - DB=mysql
   - DB=postgres
 
+before_install:
+  - if [[ "$DB" = "firebird" ]]; then sudo service firebird2.5-super start; fi
+
 before_script:
-  - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS phpbb_tests;' -U postgres; fi"
-  - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'create database phpbb_tests;' -U postgres; fi"
-  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS phpbb_tests;'; fi"
+  # Setup DBUnit, for the time being we need to hack the installation when running on firebird
   - pyrus install --force phpunit/DbUnit
+  - if [[ "$DB" = "firebird" ]]; then export PYRUS_PHP_DIR=`pear config-get php_dir`; fi
+  - if [[ "$DB" = "firebird" ]]; then git clone git://github.com/Noxwizard/dbunit.git /tmp/NoxwizardDBUnit -b firebird; fi
+  - if [[ "$DB" = "firebird" ]]; then cp -rf /tmp/NoxwizardDBUnit/PHPUnit/Extensions/Database/* $PYRUS_PHP_DIR/../share/pyrus/.pear/php/PHPUnit/Extensions/Database; fi
   - phpenv rehash
+
+  # Initialise databases
+  - if [[ "$DB" == "firebird" ]]; then echo 'CREATE DATABASE "LOCALHOST:/tmp/phpbb_tests.fdb" PAGE_SIZE = 16384;' > /tmp/create_schema.sql; fi
+  - if [[ "$DB" == "firebird" ]]; then isql-fb -u SYSDBA -p masterkey -i /tmp/create_schema.sql -q; fi
+  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'DROP DATABASE IF EXISTS phpbb_tests;' -U postgres; fi"
+  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database phpbb_tests;' -U postgres; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS phpbb_tests;'; fi"
+
+  # Composer
   - cd phpBB
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install
