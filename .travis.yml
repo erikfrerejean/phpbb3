@@ -34,7 +34,7 @@ before_script:
   - cd ../
 
 script:
-  - phpunit --configuration travis/phpunit-$DB-travis.xml
+  - phpunit --configuration travis/phpunit-$DB-travis.xml --verbose
 
 notifications:
   email:
