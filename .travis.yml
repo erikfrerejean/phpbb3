@@ -1,13 +1,13 @@
 language: php
 php:
-  - 5.3.3
+#  - 5.3.3
   - 5.3
   - 5.4
 
 env:
   - DB=firebird
-  - DB=mysql
-  - DB=postgres
+#  - DB=mysql
+#  - DB=postgres
 
 before_install:
   - if [[ "$DB" = "firebird" ]]; then sudo service firebird2.5-super start; fi
@@ -36,9 +36,9 @@ before_script:
 script:
   - phpunit --configuration travis/phpunit-$DB-travis.xml --verbose
 
-notifications:
-  email:
-    recipients:
-      - dev-team@phpbb.com
-    on_success: change
-    on_failure: change
+#notifications:
+#  email:
+#    recipients:
+#      - dev-team@phpbb.com
+#    on_success: change
+#    on_failure: change
