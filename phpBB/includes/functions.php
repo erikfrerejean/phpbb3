@@ -2003,7 +2003,8 @@ function on_page($num_items, $per_page, $start)
 */
 function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 {
-	global $_SID, $_EXTRA_URL, $phpbb_hook;
+	global $_SID, $_EXTRA_URL;
+	global $phpbb_dispatcher;
 
 	if ($params === '' || (is_array($params) && empty($params)))
 	{
@@ -2011,14 +2012,17 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		$params = false;
 	}
 
-	// Developers using the hook function need to globalise the $_SID and $_EXTRA_URL on their own and also handle it appropriately.
+	// Developers using the hook function to override the function need to globalise
+	// the $_SID and $_EXTRA_URL on their own and also handle it appropriately.
 	// They could mimic most of what is within this function
-	if (!empty($phpbb_hook) && $phpbb_hook->call_hook(__FUNCTION__, $url, $params, $is_amp, $session_id))
+	$append_sid_override = false;
+
+	$vars = array('url', 'params', 'is_amp', 'session_id', 'append_sid_override');
+	extract($phpbb_dispatcher->trigger_event('core.append_sid', compact($vars)));
+
+	if ($append_sid_override)
 	{
-		if ($phpbb_hook->hook_return(__FUNCTION__))
-		{
-			return $phpbb_hook->hook_return_result(__FUNCTION__);
-		}
+		return;
 	}
 
 	$params_is_array = is_array($params);
