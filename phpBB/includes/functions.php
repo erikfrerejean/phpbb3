@@ -4533,7 +4533,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	$page_header_override = false;
 
 	$vars = array('page_title', 'display_online_list', 'item_id', 'item', 'page_header_override');
-	extract($phpbb_dispatcher->trigger_event('core.page_header_override', compact($vars)));
+	extract($phpbb_dispatcher->trigger_event('core.page_header_modify', compact($vars)));
 
 	if ($page_header_override)
 	{
