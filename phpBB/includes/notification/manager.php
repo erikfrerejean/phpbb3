@@ -15,6 +15,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 /**
 * Notifications service class
 * @package notifications
@@ -70,7 +72,7 @@ class phpbb_notification_manager
 	* @param string $user_notifications_table
 	* @return phpbb_notification_manager
 	*/
-	public function __construct($notification_types, $notification_methods, $phpbb_container, phpbb_user_loader $user_loader, phpbb_db_driver $db, $user, $phpbb_root_path, $php_ext, $notification_types_table, $notifications_table, $user_notifications_table)
+	public function __construct($notification_types, $notification_methods, ContainerBuilder $phpbb_container, phpbb_user_loader $user_loader, phpbb_db_driver $db, phpbb_user $user, $phpbb_root_path, $php_ext, $notification_types_table, $notifications_table, $user_notifications_table)
 	{
 		$this->notification_types = $notification_types;
 		$this->notification_methods = $notification_methods;
